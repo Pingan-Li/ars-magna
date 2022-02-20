@@ -137,4 +137,13 @@ push和pop是栈这种数据结构的典型操作。这就意味着，这些回�
 3. 用非0execute参数调用pthread_cleanup_pop()；
 
 这两个函数有一个限制，它们可以实现为宏，在这种情况下，必须配对使用，否则会编译失败。
-
+## 5. 总结
+线程和进程在操作上存在一定的相似性，我们可以按照如下的表哥进行对应：
+| 进程原语 | 线程原语            | 描述                   |
+| -------- | ------------------- | ---------------------- |
+| fork     | pthread_create      | 创建新的控制流         |
+| exit     | pthread_exit        | 从现在的控制流中退出   |
+| waitpid  | pthread_join        | 从控制流中得到退出状态 |
+| atexit   | pthread_cancel_push | 注册回调函数           |
+| getpid   | pthread_self        | 获取控制流的ID         |
+| abort    | pthread_cancel      | 请求控制流的非正常退出 |
