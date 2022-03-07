@@ -1,8 +1,16 @@
 # Socket 简介
 ## 概述
-Socket是网络编程的一个抽象模型，服务器和用户端之间的网络通信通过Socket模型进行。
-## API
+Socket（套接字）是网络编程的一个抽象模型，服务器和用户端之间的网络通信通过Socket模型进行。不过，这里要区分socket和socket discriptor（套接字描述符，简写为sockfd）。所谓的socket是操作系统内核在管理，而sockfd是操作系统对外发布的一个资源句柄( resource handler)。在使用系统调用时，我们操作的实际上是sockfd和socket address。为了更好地理解socket，可以将文件作为类比：
 
+| Socket            | File            | 说明                                       |
+| ----------------- | --------------- | ------------------------------------------ |
+| socket            | file            | 由内核管理的一种资源，也是一种IO的抽象模型 |
+| socket address    | filepath        | 调用者向内核表明IO操作的对象               |
+| socket discriptor | file discriptor | 内核向调用者提供的IO资源句柄               |
+
+以上三个概念非常容易混淆，socket != socket_address != sockfd。三者之间共同写协作才能完成网络IO。
+
+## API
 ### 1. socket
 通过调用socket来创建socket。
 ```C++
@@ -10,7 +18,7 @@ int socket(int domain, int type, int protocol);
 ```
 返回值：
 （1）-1， 表明错误产生。
-（2）其他值，socekt的描述符(descriptor)。
+（2）其他，返回sockfd。
 
 返回值的情况是比较清晰的，但是socket函数的参数却复杂的多，虽然三个参数的值类型都是int，但是其含义却有所不同。
 | domain   | 说明       |
