@@ -88,6 +88,14 @@ init-declarator-list是一组以逗号分割的init-declarators, 具有以下两
 9. 函数指针声明符，类型由S(decl-specifier-seq)所确定，如果以*, &, &&开始，那么需要使用括号包围
 
 
+针对array和pointer：
+```C++
+int *fp[5];    // array of pointers.
+int *(fp1)[5]; // array of pointers.
+int(*fp2)[5];  // pointer to array.
+int *(fp3[5]); // array of poitners.
+```
+
 Const和Volatile的两重性：
 const和volatile既能出现在specifier中，又能出现在declarator中，因此：
 1. If cv appears before * in the pointer declaration, it is part of `decl-specifier-seq` and applies to the `pointed-to object`.
