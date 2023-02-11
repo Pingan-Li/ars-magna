@@ -43,3 +43,7 @@ sudo semanage fcontext --add --type "samba_share_t" "/home/jane(/.*)?"
 ```shell
 sudo systemctl restart smb
 ```
+
+Ref
+
+[1] https://docs.fedoraproject.org/en-US/quick-docs/samba/
