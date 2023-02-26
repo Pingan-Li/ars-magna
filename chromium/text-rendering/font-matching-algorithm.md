@@ -92,3 +92,80 @@ FontFallbackList
 FontSelector
 FontFaceCache
 FontCache
+
+## StyleResolve
+
+blink::StyleResolver -> ComputedStyle::SetFontInterl
+blink::StyleResolver
+    每个blink::Document对象中都持有一个StyleResolver对象，是严格的1：1的关系。blink::StyleResolver最重要的成员函数就是ResolveStyle，它的作用就是给blink::Document中的元素进行CSS style解析，这些sytle里面自然就包括字体的属性，在这个方法内会调用ApplyBaseStyle。Base style在blink中的概念就是与动画无关的样式，其中就包括字体的样式。
+    大致的流程就是这样的，
+    1. 从Initial style中拷贝出一个基本的sytle，作为样式解析的开始.
+    InitStyleAndApplyInheritance() -> ApplyInheritance() -> CreateComputedStyle()
+    2. 从Element的父元素中继承属性:
+    InitStyleAndApplyInheritance() -> ApplyInheritance() -> ComputedStyleBase::InheritFrom()
+    3. 收集所有作用在这个元素上的样式规则
+    MatchAllRules()
+    4. 将所有的规则（继承的和自有的）计算作用顺序。
+    CascadeAndApplyMatchedProperties(),
+    在第四步的时候，会进入到StyleCascade对象
+    StyleCacade对象是这样的，它分析收集到的CSS规则，计算出那些规则时可以跳过的，哪些规则是起实质作用的，以及按照何种顺序起作用。
+    StyleResolver在收集到某个元素的CSS规则之后就会传递给StyleCascade，完成分析之后会调用StyleCascade的Apply方法，
+    在Apply方法里面会有大量的Apply***的方法，其中与字体相关的就是ApplyHighPriority
+    在Apply
+    HighPriority中会调用FontBuilder::CreateFont()
+
+   Document : StyleResolver = 1 : 1
+   Element : StyleCascade : StyleResovlerState : ComputedStyle = 1 : 1 : 1 : 1
+
+    FontBuilder::里面会怎么做呢？它会从ComputedStyle中拿到FontDescription， FontSelector
+    来构建一个Font对象，并且把这个Font对象所有权交给ComputedStyle
+
+这个过程简单来说，在内核层面来说的，就是完成ComutedStyle和Font对象的关联。
+
+Font对象不是现实中的Fonts，而是blink中Fonts子模块的一个顶层API集合，匹配系统字体文件或者Web字体文件只是Font对象众多功能之一，
+
+Fonts::DrawText();
+
+## Font Matching过程
+
+    blink::Font::PrimaryFont() // 细节全部封装在下面，涉及到了skia，fontconfig和平台差异化的。
+    比如skia::FontManager-> fontconfig.
+
+    但是，如果借助CSS Fonts Level3非常清晰。
+    CSS Fonts  Level3 里面讲的非常详细了。
+
+## 文本分段
+
+    第三步，我们现在有了文本(Unicode)和字体(Glyphs)，剩下就是把这个两个揉在一起作为视觉输出，但是，在真正的渲染之前，还会有一个成形（Shaing）的过程，实际上真正到了渲染那一步其实浏览器的活都干完了。
+    但是光有字体还无法决定文本渲染的结果，
+
+    Font
+    Size
+    Text Direciton
+    Text OrentialTion
+    Unicode Script
+    Language
+    Text(文本)
+    Context上下文
+
+    Shaping = （Unicode -> Glyph ID） + 附加信息。
+    
+    Text
+    Font
+    Font Size
+    Text Orentiation(水平，垂直)
+    Text Direction(LTR，RTL)
+    Unicode Script(书写体系, USCRIPT_SIMPLIFIED_HAN， USCRIPT_TRADITIONAL_HAN)
+    Unicode Language
+    Context
+
+    比如垂直书写的日语里面混合了英语，那就必须分别成形，但是又不能完全隔离不予考虑。
+
+    RunSegmenter::Consume 在HarfBuzzer
+
+## Text Shaping
+
+## FontFallback
+
+    blink::FontFallbackList, 与Font是1：1的关系，
+    
