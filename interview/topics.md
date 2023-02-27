@@ -72,3 +72,11 @@ tatakai
 
 ## [10] 谈谈fork
 
+## [11] 如何查看符号表
+
+    在Linux平台的二进制文件的格式主要是ELF，ELF有两种符号表，第一种是总符号表，另外一种是动态符号表，总符号表会包含动态符号表。动态符号表用关于向其他库或二进制提供动态链接的符号。在调用strip的时候，仅会有动态符号表会保留下来。主要有三种查看符号表的方法：
+
+| 工具 | readelf | nm |  objdump |
+| - | - | - | - |
+| 查看符号表  | readelf -WCs lib.so | nm -AC lib.so | objdump -Ct lib.so |
+| 查看动态符号表 | readelf -WC --dyn-syms lib.so  | nm -ADC lib.so | objdump -CT test.so   |

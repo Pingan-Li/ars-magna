@@ -1,9 +1,15 @@
 # Mojom IDL and Bindings Generator
+
 ## Overview
+
 Mojom用于生成Mojo协议接口(bindings interfaces)的IDL，文件的后缀一般是`.mojom`。Mojom文件需要通过协议生成器（Bindings Generator）生成特定编程语言（目前支持C++，JavaScript和Java）的接口。
+
 ## Mojom Syntax
+
 Mojom IDL支持定义结构体`structs`，联合体`unions`，接口`interfaces`，常量`constants`和枚举`enums`，以上都必须定义在一个模块`module`中。这些定义在项目构建的时候被用来生成的代码。Mojom文件内可以导入其他的Mojom文件，这样可以使用其他文件内的定义。
+
 ### Primitive Types
+
 Mojom支持一些基本的数据类型，这些基本的数据类型可以放入结构体中。
 | Type                         | Description                                                     |
 | ---------------------------- | --------------------------------------------------------------- |
@@ -25,16 +31,21 @@ Mojom支持一些基本的数据类型，这些基本的数据类型可以放入
 | associated InterfaceType     | An associated interface handle.                                 |
 | associated InterfaceType&    | An associated interface request.                                |
 | T?                           | An optional value. Primitive types.                             |
+
 ### Modules
+
 每个Mojom文件就定义了一个模块。代码生成器会根据Mojom的模块将生成的符号放入相应的命名空间中。
 比如：
+
 ```mojom
 module business.stuff;
 interface MoneyGenerator {
     GenerateMoney();
 };
 ```
+
 以上的mojom会生成一个MoneyGenerator位于business::stuff中。
+
 ```C++
 namespace business{
 namespace sutff{
@@ -46,27 +57,37 @@ class MoneyGenerator {
 ```
 
 ### Imports
+
 如果需要导入外部的mojom文件，使用
+
 ```mojom
 import "services/widget/public/interfaces/frobinator.mojom";
 ```
+
 导入的路径永远是top-level目录的相对路径，注意不支持循环引用。
+
 ### Structs
+
 结构体使用`struct`关键词，结构体主要用于将若干变量集中到一起。
+
 ```mojom
 struct StringPair {
     string first;
     string second;
 };
 ```
+
 结构体支持默认值
+
 ```mojom
 struct Request {
     int32 id = -1;
     string details;
 };
 ```
+
 下面是一个使用支持的字段类型的相当全面的示例:
+
 ```mojom
 struct StringPair {
   string first;
@@ -149,8 +170,11 @@ struct AllTheThings {
   associated SampleInterface&? maybe_another_associated_request;
 };
 ```
+
 ### Unions
+
 Mojom支持使用union关键字标记的联合。联合是一组字段，一次可以取其中任何一个字段的值。因此，它们提供了一种表示变量值类型的方法，同时最小化了存储需求。例如：
+
 ```mojom
 union ExampleUnion {
   string str;
@@ -160,8 +184,11 @@ union ExampleUnion {
   SampleInterface iface;
 };
 ```
+
 ### Enumeration Types
+
 枚举类型可以直接在模块中使用enum关键字定义，也可以嵌套在某些结构体或接口的命名空间中
+
 ```mojom
 module business.mojom;
 
@@ -180,9 +207,13 @@ struct Employee {
   // ...
 };
 ```
+
 与C样式枚举类似，单个值可以在枚举定义中显式赋值。默认情况下，值以0为基础，并按顺序递增1。嵌套定义对生成的绑定的影响因目标语言而异。
+
 ### Constants
+
 常量可以使用const关键字直接定义在模块中，也可以嵌套在某个结构或接口的命名空间中
+
 ```mojom
 module business.mojom;
 
@@ -200,9 +231,13 @@ struct Employee {
   Type type;
 };
 ```
+
 嵌套定义对生成的绑定的影响因目标语言而异。
+
 ### Interfaces
+
 接口是参数化请求消息的逻辑束。每个请求消息可以可选地定义参数化响应消息。下面是定义具有各种请求的接口Foo的示例：
+
 ```mojom
 interface Foo {
   // A request which takes no arguments and expects no response.
@@ -218,8 +253,11 @@ interface Foo {
   MyMessageWithMoarResponse(string a, string b) => (int8 c, int8 d);
 };
 ```
+
 任何有效的结构字段类型（请参见Structs）也是有效的请求或响应参数类型。两者的类型符号相同。
+
 ### Attributes
+
 Mojom定义的含义可能会被Attributes改变，这些属性使用类似于Java或C#属性的语法指定。
 
 [Sync] 可以为任何需要响应的接口方法指定Sync属性。这使得方法的调用方可以同步等待响应。请参见C++绑定文档中的同步调用。请注意，其他目标语言当前不支持同步调用。
@@ -233,18 +271,27 @@ Mojom定义的含义可能会被Attributes改变，这些属性使用类似于Ja
 [EnableIf=value] EnableIf属性用于在解析mojom时有条件地启用定义。如果GN文件中的mojom目标不包括enabled_features列表中的匹配值，则定义将被禁用。这对于仅在一个平台上有意义的mojom定义很有用。请注意，每个定义只能设置EnableIf属性一次。
 
 ## Generated Code For Target Languages
+
 当绑定生成器成功处理输入Mojom文件时，它会为每个支持的目标语言发出相应的代码:
+
 1. C++
 2. JavaScrit
 3. Java
+
 ## Message Validation
+
 无论目标语言如何，在将所有接口消息发送到接口的接收实现之前，都会在反序列化期间进行验证。这有助于确保跨接口的一致性验证，而不会在每次添加新消息时都给开发人员和安全审查人员留下负担。
 如果消息未通过验证，则永远不会发送该消息。而是在绑定对象上引发连接错误（有关详细信息，请参见C++连接错误、Java连接错误或JavaScript连接错误）
 对于原始Mojom类型，一些基线级别的验证是自动完成的
+
 ### Non-Nullable Objects
+
 Mojom字段或参数值（例如，结构、接口、数组等）可以在Mojom定义中标记为null（请参见基本类型）。如果字段或参数未标记为nullable，但收到的消息中包含null值，则该消息将无法验证。
+
 ### Enums
+
 Mojom中声明的枚举将根据合法值范围自动验证。例如，如果Mojom声明枚举：
+
 ```mojom
 enum AdvancedBoolean {
   TRUE = 0,
@@ -254,6 +301,7 @@ enum AdvancedBoolean {
 ```
 
 ## Grammar Reference
+
 ```text
 Below is the (BNF-ish) context-free grammar of the Mojom language:
 
