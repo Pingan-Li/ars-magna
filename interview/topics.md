@@ -79,4 +79,4 @@ tatakai
 | 工具 | readelf | nm |  objdump |
 | - | - | - | - |
 | 查看符号表  | readelf -WCs lib.so | nm -AC lib.so | objdump -Ct lib.so |
-| 查看动态符号表 | readelf -WC --dyn-syms lib.so  | nm -ADC lib.so | objdump -CT test.so   |
+| 查看动态符号表 | readelf -WC --dyn-syms lib.so  | nm -ADC lib.so | objdump -CT lib.so   |

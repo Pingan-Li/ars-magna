@@ -1,4 +1,5 @@
 # 字体处理流程
+
 ##
 
 ```C++
@@ -148,9 +149,7 @@
 #86 0x55711e73e56a _start
 ```
 
-
 Font::DrawText 255
-
 
 ```C++
 #0 0x7ff93d7e938f base::debug::CollectStackTrace()
@@ -199,7 +198,6 @@ Font::DrawText 255
 #43 0x7ff912a5a3c7 blink::FramePainter::Paint()
 #44 0x7ff9119cf6f0 blink::LocalFrameView::PaintFrame()
 ```
-
 
 ```C++
 #0 0x7f934abe938f base::debug::CollectStackTrace()
@@ -326,9 +324,4 @@ Font::DrawText 255
  trp: 000000000000000d msk: 0000000000000000 cr2: 0000000000000000
 ```
 
-
-
-
-
-
-Shape先于DrawText
+ShapeText 先于 DrawText

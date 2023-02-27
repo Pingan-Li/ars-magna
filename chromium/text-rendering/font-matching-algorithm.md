@@ -168,4 +168,22 @@ Fonts::DrawText();
 ## FontFallback
 
     blink::FontFallbackList, 与Font是1：1的关系，
-    
+
+```C++
+
+[140241:1:0227/213546.412026:ERROR:font.h(267)] lipingan: PrimaryFont()
+[140241:1:0227/213546.412055:ERROR:font.cc(120)] lipingan: EnsureFontFallbackList()
+[140241:1:0227/213546.412078:ERROR:font_fallback_list.h(92)] lipingan: PrimarySimpleFontData()
+[140241:1:0227/213546.412104:ERROR:font_fallback_list.cc(96)] lipingan: DeterminePrimarySimpleFontData()
+[140241:1:0227/213546.412145:ERROR:font_fallback_list.cc(106)] lipingan: DeterminePrimarySimpleFontDataCore()
+[140241:1:0227/213546.412185:ERROR:font_fallback_list.cc(252)] lipingan: FontDataAt()
+[140241:1:0227/213546.412238:ERROR:font_fallback_list.cc(159)] lipingan: GetFontData()
+[140241:1:0227/213546.412273:ERROR:css_font_selector.cc(105)] lipingan: GetFontData()  // Web and System
+[140241:1:0227/213546.412337:ERROR:font_cache.cc(286)] lipingan: GetFontData()
+[140241:1:0227/213546.417430:ERROR:font_cache.cc(303)] lipingan: FontDataFromFontPlatformData()
+[140241:1:0227/213546.417637:ERROR:font_platform_data.cc(287)] lipingan: SetupSkFont()
+```
+
+## Text Shaping
+
+    Font::DrawText
