@@ -63,7 +63,10 @@ O_TRUNC: 如果此文件存在，而且为只写或读写成功打开时，将�
 
 O_RSYNC:
 
-TODO
+mode
+| Mean | Value |
+| - | - |
+| I_ | FE|
 
 ## creat函数
 

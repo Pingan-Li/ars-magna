@@ -12,6 +12,7 @@
 1. VFS
 2. epoll
 3. io_uring
+4. Access mode algorithm
 
 ## Socket Programming
 

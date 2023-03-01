@@ -128,8 +128,6 @@ The following selector represents any element whose ID-typed attribute has the v
 
 ## 3.6 Pesudo-classes
 
-
-
 ## 4. 选择器组
 
 一个以逗号分隔的选择器列表表示由列表中的每个单独选择器选择的所有元素的并集。 （逗号是 U+002C。）例如，在 CSS 中，当多个选择器共享相同的声明时，它们可能会被分组到一个逗号分隔的列表中。 空格可能出现在逗号之前和/或之后。
