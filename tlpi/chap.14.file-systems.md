@@ -69,14 +69,9 @@
 
 ## 虚拟文件系统
 
-虚拟文件系统是一个非常
+Linux需要支持各种文件系统，其实现的细节均不相同。举例来说，这些差异包括文件块的分配方式，以及目录的组织方式，如果将这些细节暴露给上层应用，会导致严重的移植性，维护性问题。所以为了实现解耦，虚拟文件系统就成了必要的。上层应用调用的IO操作都是虚拟文件系统提供的API，虚拟文件系统支持的系统调用有：`open()`, `write()`, `lseek()`, `close()`, `truncate()`, `stat()`, `mount()`, `mmap()`, `mkdir()`, `link()`, `unlink()`, `symlink()`, `rename()`.上层应用在调用这些API时，虚拟文件系统会将操作交给底层文件系统给出。
 
-## 引言
-
-Linux作为一个开源操作系统，必须支持种类繁多的文件系统，如果直接将不同文件系统的接口暴露给上层应用，那么显然是个噩梦。因此必须增加一层抽象，使应用可以避免对接每一个文件系统，这个中间层就是VFS。上层应用发出的各种操作由VFS转发到下层的文件系统中。VFS支持的系统调用有：open(), read(), write(), lseek(), close(),
-truncate(), stat(), mount(), umount(), mmpa(), mkdir(), link(), unlink(), symlink(), reaname().
-
-## Directory Entry
+### Directory Entry
 
 在应用层传入的路径会通过VFS转换成Direcoty entry对象，Directory entry对象可以缓存在内存中，所以效率非常高。
 
