@@ -69,7 +69,36 @@
 
 ## 虚拟文件系统
 
-Linux需要支持各种文件系统，其实现的细节均不相同。举例来说，这些差异包括文件块的分配方式，以及目录的组织方式，如果将这些细节暴露给上层应用，会导致严重的移植性，维护性问题。所以为了实现解耦，虚拟文件系统就成了必要的。上层应用调用的IO操作都是虚拟文件系统提供的API，虚拟文件系统支持的系统调用有：`open()`, `write()`, `lseek()`, `close()`, `truncate()`, `stat()`, `mount()`, `mmap()`, `mkdir()`, `link()`, `unlink()`, `symlink()`, `rename()`.上层应用在调用这些API时，虚拟文件系统会将操作交给底层文件系统给出。
+Linux需要支持各种文件系统，其实现的细节均不相同。举例来说，这些差异包括文件块的分配方式，以及目录的组织方式，如果将这些细节暴露给上层应用，会导致严重的移植性，维护性问题。所以为了实现解耦，虚拟文件系统就成了必要的。上层应用调用的IO操作都是虚拟文件系统提供的API，虚拟文件系统支持的系统调用有：`open()`, `write()`, `lseek()`, `close()`, `truncate()`, `stat()`, `mount()`, `mmap()`, `mkdir()`, `link()`, `unlink()`, `symlink()`, `rename()`.上层应用在调用这些API时，虚拟文件系统会将操作交给底层文件系统。
+
+### 文件系统的挂载和卸载
+
+与其他的Unix操作系统一样，Linux上所有文件系统的文件都位于根目录下，其他的文件都是根目录的一个子树，root用户可以使用下面的方式将一个device挂载到给定的directory
+
+```sh
+mount device directory
+```
+
+direcotry所在的路径有时也被称为挂载点，这个命令中的directory必须存在，否则将挂载失败，至于原因参见Ref.3。
+
+与之相关的系统调用如下所示。
+
+```C++
+#include <sys/mount.h>
+int mount(char const *source, char const *target, char const *fstype, unsigned long mountflags, void const *data);
+```
+
+返回0表示成功，-1标识失败。
+
+同样，文件系统可以卸载，通过调用umount或者umount2卸载掉文件系统。
+
+```C++
+int umount(char const *target);
+
+int umount2(char const *target, int flags);
+```
+
+如果文件系统中存在打开的文件，那么就会产生EBUSY的错误。
 
 ### Directory Entry
 
@@ -102,3 +131,5 @@ int umount(char const *target);
 \[1\]<https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html>
 
 \[2\]<http://www.linfo.org/inode.html>
+
+\[3\]<https://unix.stackexchange.com/questions/251090/why-does-mount-happen-over-an-existing-directory>
