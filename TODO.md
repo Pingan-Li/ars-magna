@@ -17,3 +17,9 @@
 ## Socket Programming
 
 1. socket
+
+## Multi-process Architecture
+
+1. Protobuf
+2. gRPC
+3. Mojo
