@@ -5,7 +5,7 @@
 1. shard_ptr, weak_ptr和unique_ptr
 2. 对象生命周期控制
 3. 虚函数机制
-4.
+4. member iniitialization and std::initialzation.
 
 ## System Programming
 
