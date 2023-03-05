@@ -80,3 +80,21 @@ tatakai
 | - | - | - | - |
 | 查看符号表  | readelf -WCs lib.so | nm -AC lib.so | objdump -Ct lib.so |
 | 查看动态符号表 | readelf -WC --dyn-syms lib.so  | nm -ADC lib.so | objdump -CT lib.so   |
+
+## [12] HTTP 1.x 和 HTTP 2的区别是什么？
+
+HTTP2采用二进制传输，HTTP1.x 采用文本传输。
+HTTP2的传输性能更高可以同时处理多个请求，相对于HTTP1的文本安全性更高。
+HTTP2可以推送资源到客户端。
+
+## [13] HTTP和HTTPS的区别是什么？
+
+HTTPS需要申请CA证书，一般免费的证书是比较少的，因而需要一定的费用。
+
+HTTP的报文在进入TCP这一层之前，如果通过了TLS/SSL加密的话，那么就会变成HTTPS报文，在安全性有极大的提升，HTTPS能够防御中间人攻击，也就是在网络传输这个过程中可以保证安全，但是如果恶意软件直入侵了客户端后者服务端，那么HTTPS也无能为力。HTTP和HTTPS的端口也有区别，分别是80和443。
+
+<https://blog.csdn.net/weixin_43126297/article/details/125613576>
+
+<https://www.jianshu.com/p/d3edc375467e>
+
+## [14]
