@@ -36,7 +36,7 @@ reset()函数用于替换当前的管理的对象，可以提供一个deletor。
 
 1. 空参数重载版本，调用后表明当前的`shared_ptr`要释放这个对象，并且`*this`不再管理任何对象。
 2. 用`Y* ptr`替换当前被`shared_ptr`管理的那个对象，千万注意，这里Y类型并不是任意的，而要是一个完整类型并且可以隐式转换成T类型。
-3. 在2.的基础上，再传入一个deletor
+3. 在2.的基础上，再传入一个Deletor
 4. 在3.的基础上，再传入一个Allocator
 
 #### swap
@@ -138,6 +138,8 @@ shared_ptr<T> make_shared_for_overwrite( std::size_t N ); // T is U[]
 3. Allocator
 4. 持有同一个managed object的shared_ptr的数量
 5. 引用同一个managed object的weak_ptr的数量
+
+!["A possible shared_ptr memory layout"](/res/image/ST5xPgtrtB0ZluZibn6rSw3p.png)
 
 ## Unique Pointer
 
