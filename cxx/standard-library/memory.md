@@ -151,11 +151,9 @@ shared_ptr<T> make_shared_for_overwrite( std::size_t N ); // T is U[]
 1. 管理一个单独的对象(allocated with new)
 2. 管理一个数组(allocated with new[])
 
-千万要注意，
+千万要注意，只有`non-const`的`unique_ptr`可以转移所有权。
 
 ### API
-
-阿斯顿阿
 
 #### release
 
