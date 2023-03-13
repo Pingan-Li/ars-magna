@@ -241,3 +241,7 @@ std::shared_ptr<T> lock() const noexcept;
 | 可拷贝 | 是 | 否 | 是 |
 | 可移动 | 是 | 否 | 是 |
 | 所有权 | 共享 | 独占 | 无 |
+
+## Refs
+
+\[1\] <https://www.nextptr.com/tutorial/ta1358374985/shared_ptr-basics-and-internals-with-examples>
