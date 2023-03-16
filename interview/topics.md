@@ -140,3 +140,11 @@ HTTP的报文在进入TCP这一层之前，如果通过了TLS/SSL加密的话，
 
 Ref.
 <https://hackingcpp.com/cs/value_vs_reference_semantics.html>
+
+## [15] 简述一下C++中的多态
+
+C++中的多态
+静态多态：
+动态多态：
+
+## [16]
