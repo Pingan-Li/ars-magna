@@ -6,6 +6,8 @@
 2. 对象生命周期控制
 3. 虚函数机制
 4. member iniitialization and std::initialzation.
+5. 内存对齐
+6. 多维数组
 
 ## System Programming
 
