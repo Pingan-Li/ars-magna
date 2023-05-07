@@ -8,6 +8,7 @@
 4. member iniitialization and std::initialzation.
 5. 内存对齐
 6. 多维数组
+7. CString专题
 
 ## Algorithm & Data structure
 

@@ -68,17 +68,19 @@ std::thread的构造函数非常关键。应该说，在C++中，几乎所有与
      static_assert( __is_invocable<typename decay<_Callable>::type, typename decay<_Args>::type...>::value, 
             "std::thread arguments must be invocable after conversion to rvalues");
     #ifdef GTHR_ACTIVE_PROXY
+
  // Create a reference to pthread_create, not just the gthr weak symbol.
      auto __depend = reinterpret_cast<void(*)()>(&pthread_create);
     #else
-     auto __depend = nullptr;
+auto__depend = nullptr;
     #endif
-     using _Wrapper = _Call_wrapper<_Callable, _Args...>;
+     using _Wrapper =_Call_wrapper<_Callable,_Args...>;
  // Create a call wrapper with DECAY_COPY(__f) as its target object
  // and DECAY_COPY(__args)... as its bound argument entities.
      _M_start_thread(_State_ptr(new _State_impl<_Wrapper>( std::forward<_Callable>(__f), std::forward<_Args>(__args)...)),__depend);
     }
     #endif // _GLIBCXX_HAS_GTHREADS
+
    ```
 
    当然C++强大的元编程能力也造成了代码阅读的困难，就上面的Callable构造逻辑来说，想要的彻底理解仍需一些努力。首先，会对传进来的Callable对象做一个检查，如果它不能被invoke，那么直接就会在编译期报错。然后最关键的是，对于_M_start_thread的调用，这表明在std::thread线程的构造过程中，就已经开始了线程的执行。
